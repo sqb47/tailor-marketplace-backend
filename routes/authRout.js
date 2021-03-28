@@ -30,7 +30,7 @@ router.post("/login", async (req, res) => {
       return
     }
     if (password == user[0].password){
-      res.send(user);
+      res.send(user[0]);
       return
     }else{
       res.send('Incorrect password');
