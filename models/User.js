@@ -23,6 +23,47 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  measurement:{
+    neck:Number,
+    shoulder:Number,
+    chest:Number,
+    waist:Number,
+    hips:Number,
+    slevelength:Number,
+    length:Number,
+    ghera:Number,
+    salwarlength:Number,
+  },
+  products:[
+    {
+      name:String,
+      description:String,
+      date:String,
+      image:String,
+      price:Number,
+      days:Number
+    }
+  ],
+  reviews:[
+    {
+      name:String,
+      email:String,
+      stars:Number,
+      message:String,
+      date:String,
+    }
+  ],
+  orders:[
+    {
+      date:String,
+      email:String,
+      name:String,
+      productid:Number,
+      status:String,
+    }
+  ]
+
+
 });
 
 mongoose.model("User", userSchema);
