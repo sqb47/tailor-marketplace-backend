@@ -13,8 +13,19 @@ router.post("/signup", async (req, res) => {
   try {
     const user = User({ email, password, fullname, number, accounttype });
     console.log("new user:", user)
+    var data={
+          neck:0,
+          shoulder:0,
+          chest:0,
+          waist:0,
+          hips:0,
+          slevelength:0,
+          length:0,
+          ghera:0,
+          salwarlength:0,
+        }
     await user.save();
-    res.send(req.body);
+    res.send(user);
   } catch (err) {
     console.log("==============");
     res.send(err);
