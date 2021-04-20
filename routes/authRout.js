@@ -230,8 +230,8 @@ router.put("/order", async (req, res) => {
   }
 });
 //=========================
-//=================== get updated user data ===============================
-router.get("/user", async (req, res) => {
+//=================== get user by id ===============================
+router.post("/user", async (req, res) => {
   const { 
     id,
    } = req.body;
@@ -245,5 +245,6 @@ router.get("/user", async (req, res) => {
   }
 });
 //=========================
+
 
 module.exports = router;
