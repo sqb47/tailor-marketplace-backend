@@ -134,7 +134,7 @@ router.put("/user", async (req, res) => {
 //=========================
 
 //==================== products ==============================
-router.put("/products", async (req, res) => {
+router.post("/products", async (req, res) => {
   const { 
     id,
     name,
@@ -168,8 +168,10 @@ router.put("/products", async (req, res) => {
 
 //==================== update products ==============================
 router.put("/products", async (req, res) => {
+  console.log('-----------------------------------------------------------------------')
   const { 
     id,
+    productId,
     name,
     description,
     date,
@@ -180,7 +182,7 @@ router.put("/products", async (req, res) => {
     user = await User.findOne({ _id: id }).exec();
 
     let product={
-      id:id,
+      id:productId,
       name:name,
       description:description,
       date:date,
@@ -190,52 +192,44 @@ router.put("/products", async (req, res) => {
     }
 
     for (var i=0;i<user.products.length;i++){
-      if (user.products[i].id == id){
+      if (user.products[i]._id == productId){
+        console.log(user.products[i]._id)
         user.products[i]=product
       }
     }
 
     await user.save();
+    console.log(user)
     res.send(user);
   } catch (err) {
     console.log("==============");
+    console.log(err)
     res.send(err);
   }
 });
 //=========================
 
 //==================== delete products ==============================
-router.put("/products", async (req, res) => {
+router.delete("/products", async (req, res) => {
+  console.log('++++++++++++++++++++++++++++++')
   const { 
     id,
-    name,
-    description,
-    date,
-    image,
-    price,
-    days } = req.body;
+    productId, } = req.body;
+
   try {
     user = await User.findOne({ _id: id }).exec();
 
-    let product={
-      name:name,
-      description:description,
-      date:date,
-      image:image,
-      price:price,
-      days:days
-    }
-
     for (var i=0;i<user.products.length;i++){
-      if (user.products[i].id == id){
-        user.products[i].splice(i, 1);
+      if (user.products[i]._id == productId){
+        user.products.splice(i, 1);
       }
     }
 
     await user.save();
+    console.log(user)
     res.send(user);
   } catch (err) {
-    console.log("==============");
+    console.log("==============", err);
     res.send(err);
   }
 });
