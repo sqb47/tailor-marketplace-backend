@@ -166,6 +166,81 @@ router.put("/products", async (req, res) => {
 });
 //=========================
 
+//==================== update products ==============================
+router.put("/products", async (req, res) => {
+  const { 
+    id,
+    name,
+    description,
+    date,
+    image,
+    price,
+    days } = req.body;
+  try {
+    user = await User.findOne({ _id: id }).exec();
+
+    let product={
+      id:id,
+      name:name,
+      description:description,
+      date:date,
+      image:image,
+      price:price,
+      days:days
+    }
+
+    for (var i=0;i<user.products.length;i++){
+      if (user.products[i].id == id){
+        user.products[i]=product
+      }
+    }
+
+    await user.save();
+    res.send(user);
+  } catch (err) {
+    console.log("==============");
+    res.send(err);
+  }
+});
+//=========================
+
+//==================== delete products ==============================
+router.put("/products", async (req, res) => {
+  const { 
+    id,
+    name,
+    description,
+    date,
+    image,
+    price,
+    days } = req.body;
+  try {
+    user = await User.findOne({ _id: id }).exec();
+
+    let product={
+      name:name,
+      description:description,
+      date:date,
+      image:image,
+      price:price,
+      days:days
+    }
+
+    for (var i=0;i<user.products.length;i++){
+      if (user.products[i].id == id){
+        user.products[i].splice(i, 1);
+      }
+    }
+
+    await user.save();
+    res.send(user);
+  } catch (err) {
+    console.log("==============");
+    res.send(err);
+  }
+});
+//=========================
+
 //================== reviews ================================
 router.put("/reviews", async (req, res) => {
   const { 
@@ -248,3 +323,4 @@ router.post("/user", async (req, res) => {
 
 
 module.exports = router;
+// https://love2dev.com/blog/javascript-remove-from-array/ ARRAY DELETE

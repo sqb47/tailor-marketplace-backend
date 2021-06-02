@@ -30,4 +30,32 @@ app.get("/",(req,res)=>{
 
 app.listen(port,()=>{
     console.log("server running on port:"+port )
+    var temp=[
+        {
+            id:0,
+            value:23,
+        },
+        {
+            id:1,
+            value:23,
+        },
+        {
+            id:2,
+            value:23,
+        },
+        {
+            id:3,
+            value:23,
+        },
+    ]
+    for (var i=0;i<temp.length;i++){
+        if (temp[i].id==2){
+            // delete temp[i];
+            temp.splice(i, 1); 
+            // console.log(temp[i])
+        }
+        
+    }
+    console.log('lojikjkl',temp)
+
 })
