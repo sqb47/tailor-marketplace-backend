@@ -274,9 +274,11 @@ router.put("/order", async (req, res) => {
     id,
     date,
     email,
-    name,
     productid,
     status,
+    tid,
+    tname,
+    productname,
    } = req.body;
   try {
     user = await User.findOne({ _id: id }).exec();
@@ -284,7 +286,9 @@ router.put("/order", async (req, res) => {
     let order={
       date:date,
       email:email,
-      name:name,
+      tid:tid,
+      tname:tname,
+      productname:productname,
       productid:productid,
       status:status,
     }

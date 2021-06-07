@@ -36,6 +36,7 @@ const userSchema = new Schema({
   },
   products:[
     {
+      uid:String,
       name:String,
       description:String,
       date:String,
@@ -57,8 +58,10 @@ const userSchema = new Schema({
     {
       date:String,
       email:String,
-      name:String,
-      productid:Number,
+      tid:String,
+      tname:String,
+      productid:String,
+      productname:String,
       status:String,
     }
   ]
