@@ -137,6 +137,7 @@ router.put("/user", async (req, res) => {
 router.post("/products", async (req, res) => {
   const { 
     id,
+    tid,
     name,
     description,
     date,
@@ -147,6 +148,7 @@ router.post("/products", async (req, res) => {
     user = await User.findOne({ _id: id }).exec();
 
     let product={
+      tid:tid,
       name:name,
       description:description,
       date:date,

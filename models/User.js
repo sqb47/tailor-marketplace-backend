@@ -36,7 +36,7 @@ const userSchema = new Schema({
   },
   products:[
     {
-      uid:String,
+      tid:String,
       name:String,
       description:String,
       date:String,
