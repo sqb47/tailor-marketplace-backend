@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const nmail = require('nodemailer');
 
-var transporter = nodeMailer.createTransport({
+var transporter = nmail.createTransport({
   service: 'gmail',
   auth: {
     user: 'saqib.3019@gmail.com',
