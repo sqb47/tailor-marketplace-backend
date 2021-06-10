@@ -1,5 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const nmail = require('nodemailer');
+
+var transporter = nodeMailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'saqib.3019@gmail.com',
+    pass: '(m.saqib@1('
+  }
+});
 
 const router = express.Router();
 
@@ -27,7 +36,7 @@ router.post("/signup", async (req, res) => {
     await user.save();
     res.send(user);
   } catch (err) {
-    console.log("==============");
+    console.log("==============",err);
     res.send(err);
   }
 });
@@ -108,7 +117,7 @@ router.get("/tailors", async (req, res) => {
     console.log(user)
     res.send(user);
   } catch (err) {
-    console.log("==============");
+    console.log("==============",err);
     res.send(err);
   }
 });
@@ -127,7 +136,7 @@ router.put("/user", async (req, res) => {
     res.send(user);
 
   } catch (err) {
-    console.log("==============");
+    console.log("==============",err);
     res.send(err);
   }
 });
@@ -137,7 +146,8 @@ router.put("/user", async (req, res) => {
 router.post("/products", async (req, res) => {
   const { 
     id,
-    tid,
+    tname,
+    temail,
     name,
     description,
     date,
@@ -148,7 +158,9 @@ router.post("/products", async (req, res) => {
     user = await User.findOne({ _id: id }).exec();
 
     let product={
-      tid:tid,
+      tid:id,
+      tname:tname,
+      temail:temail,
       name:name,
       description:description,
       date:date,
@@ -162,7 +174,7 @@ router.post("/products", async (req, res) => {
     await user.save();
     res.send(user);
   } catch (err) {
-    console.log("==============");
+    console.log("==============",err);
     res.send(err);
   }
 });
@@ -204,7 +216,7 @@ router.put("/products", async (req, res) => {
     console.log(user)
     res.send(user);
   } catch (err) {
-    console.log("==============");
+    console.log("==============",err);
     console.log(err)
     res.send(err);
   }
@@ -264,7 +276,7 @@ router.put("/reviews", async (req, res) => {
     await user.save();
     res.send(user);
   } catch (err) {
-    console.log("==============");
+    console.log("==============",err);
     res.send(err);
   }
 });
@@ -280,27 +292,49 @@ router.put("/order", async (req, res) => {
     status,
     tid,
     tname,
+    temail,
     productname,
    } = req.body;
   try {
     user = await User.findOne({ _id: id }).exec();
+    tailor = await User.findOne({ _id:tid }).exec();
     
     let order={
       date:date,
       email:email,
       tid:tid,
       tname:tname,
+      temail:temail,
       productname:productname,
       productid:productid,
       status:status,
     }
 
+    var mailOptions = {
+      from: 'saqib.3019@gmail.com',
+      to: temail ,
+      subject: 'Oder place',
+      text: 'order placed to the tailor '+tname+'\nProduct Name: '+productname+'Status: '+ status 
+    };
+
+
     user.orders.push(order)
+    tailor.order.push(order)
 
     await user.save();
+    await tailor.save();
+
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+
     res.send(user);
   } catch (err) {
-    console.log("==============");
+    console.log("==============",err);
     res.send(err);
   }
 });
@@ -315,7 +349,7 @@ router.post("/user", async (req, res) => {
     
     res.send(user);
   } catch (err) {
-    console.log("==============");
+    console.log("==============",err);
     res.send(err);
   }
 });

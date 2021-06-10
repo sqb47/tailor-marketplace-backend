@@ -37,6 +37,8 @@ const userSchema = new Schema({
   products:[
     {
       tid:String,
+      tname:String,
+      temail:String,
       name:String,
       description:String,
       date:String,
@@ -60,6 +62,7 @@ const userSchema = new Schema({
       email:String,
       tid:String,
       tname:String,
+      temail:String,
       productid:String,
       productname:String,
       status:String,
