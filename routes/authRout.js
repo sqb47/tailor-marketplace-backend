@@ -6,7 +6,7 @@ var transporter = nmail.createTransport({
   service: 'gmail',
   auth: {
     user: 'saqib.3019@gmail.com',
-    pass: '(m.saqib@1('
+    pass: ')m.5@q!b@1('
   }
 });
 
@@ -115,6 +115,26 @@ router.get("/tailors", async (req, res) => {
   try {
     user = await User.find({ accounttype: "Tailor" }).exec();
     console.log(user)
+    res.send(user);
+  } catch (err) {
+    console.log("==============",err);
+    res.send(err);
+  }
+});
+//=========================
+
+//================ delete all products ==================================
+router.delete("/productsall", async (req, res) => {
+  try {
+    user = await User.find({ accounttype: "Tailor" }).exec();
+    console.log(user)
+    for (var i=0;i<user.length;i++){
+      user[i].products=[]
+      var acc = await User.findOne({ _id: user[i]._id }).exec();
+      acc = user[i]
+      await acc.save()
+    }
+    // await user.save();
     res.send(user);
   } catch (err) {
     console.log("==============",err);
@@ -313,7 +333,7 @@ router.put("/order", async (req, res) => {
     var mailOptions = {
       from: 'saqib.3019@gmail.com',
       to: temail ,
-      subject: 'Oder place',
+      subject: 'Oder placed',
       text: 'order placed to the tailor '+tname+'\nProduct Name: '+productname+'Status: '+ status 
     };
 
