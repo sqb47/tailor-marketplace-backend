@@ -317,9 +317,11 @@ router.put("/order", async (req, res) => {
    } = req.body;
   try {
     user = await User.findOne({ _id: id }).exec();
-    tailor = await User.findOne({ _id:tid }).exec();
+
+    
     
     let order={
+      cid:id,
       date:date,
       email:email,
       tid:tid,
@@ -329,18 +331,22 @@ router.put("/order", async (req, res) => {
       productid:productid,
       status:status,
     }
-
+    console.log(order)
     var mailOptions = {
       from: 'saqib.3019@gmail.com',
       to: temail ,
       subject: 'Oder placed',
-      text: 'order placed to the tailor '+tname+'\nProduct Name: '+productname+'Status: '+ status 
+      text: 'order placed to the tailor: '+tname+' Product Name: '+productname+' Status: '+ status 
     };
 
-
+    
+    tailor = await User.findOne({ _id:tid }).exec();
+    
+    
     user.orders.push(order)
-    tailor.order.push(order)
-
+    tailor.orders.push(order)
+console.log(tailor)
+console.log(user)
     await user.save();
     await tailor.save();
 
@@ -353,6 +359,64 @@ router.put("/order", async (req, res) => {
     });
 
     res.send(user);
+  } catch (err) {
+    console.log("==============",err);
+    res.send(err);
+  }
+});
+//=========================
+//=================== update order status ===============================
+router.put("/orderstatus", async (req, res) => {
+  const { 
+    productid,
+    cid,
+    status,
+    tid,
+    email,
+   } = req.body;
+  try {
+    user = await User.findOne({ _id: cid }).exec();
+
+    for (var i=0;i<user.orders.length;i++){
+      if (user.orders[i].productid == productid){
+        console.log(user.orders[i])
+        user.orders[i].status=status
+      }
+    }
+
+    var mailOptions = {
+      from: 'saqib.3019@gmail.com',
+      to: email ,
+      subject: 'Odrer status changed',
+      text: 'Status: '+ status 
+    };
+
+    
+    tailor = await User.findOne({ _id:tid }).exec();
+    
+    for (var i=0;i<tailor.orders.length;i++){
+      if (tailor.orders[i].productid == productid){
+        console.log(tailor.orders[i])
+        tailor.orders[i].status=status
+      }
+    }
+    
+    // user.orders.push(order)
+    // tailor.orders.push(order)
+    console.log(tailor)
+    console.log(user)
+    await user.save();
+    await tailor.save();
+
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+
+    res.send(tailor);
   } catch (err) {
     console.log("==============",err);
     res.send(err);
